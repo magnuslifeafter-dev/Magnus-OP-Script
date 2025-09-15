@@ -1,41 +1,91 @@
-# Compiled Lua sources
-luac.out
+-- MagnusHub_LocalScript_Extended_Merged.lua
+local tween = tween_service:Create(local_player.Character:FindFirstChild("HumanoidRootPart"), TweenInfo.new(distance / 200, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {CFrame = CFrame.new(to + Vector3.new(0, stud_offset, 0))})
+tween:Play()
+tween.Completed:Wait()
+if velocity_connection then velocity_connection:Disconnect() velocity_connection = nil end
+end
+elseif current_mob and current_mob:GetAttribute("HP") > 0 then
+if local_player and local_player.Character then
+local_player.Character:MoveTo(current_mob:GetPivot().Position + Vector3.new(0, stud_offset, 0))
+end
+end
+task.wait()
+end
+end)
+end
+end
+})
 
-# luarocks build files
-*.src.rock
-*.zip
-*.tar.gz
 
-# Object files
-*.o
-*.os
-*.ko
-*.obj
-*.elf
+game_group:AddSlider('stud_offset_y', {
+Text = 'Stud Offset Y:',
+Default = stud_offset,
+Min = -50,
+Max = 50,
+Rounding = 0,
+Compact = false,
+Callback = function(Value) stud_offset = Value end
+})
 
-# Precompiled Headers
-*.gch
-*.pch
 
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
-*.def
-*.exp
+-- Player group
+player_group:AddDivider()
 
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
 
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
+player_group:AddToggle('tp_walk', { Text = 'Tp Walk', Default = tp_walk, Tooltip = 'Goes fast idk', Callback = function(Value) tp_walk = Value end})
+player_group:AddSlider('tp_walk_speed', { Text = 'Tp Walk Speed:', Default = tp_walk_speed, Min = 1, Max = 10, Rounding = 0, Compact = false, Callback = function(Value) tp_walk_speed = Value end})
+player_group:AddDivider()
+player_group:AddToggle('inf_jump', { Text = 'Inf Jump', Default = inf_jump, Tooltip = 'Lets you jump forever', Callback = function(Value) inf_jump = Value end})
 
+
+-- Watermark / FPS
+local FrameTimer = tick()
+local FrameCounter = 0
+local FPS = 60
+local watermark_connection = run_service.RenderStepped:Connect(function()
+FrameCounter = FrameCounter + 1
+if (tick() - FrameTimer) >= 1 then
+FPS = FrameCounter
+FrameTimer = tick()
+FrameCounter = 0
+end
+if stats and stats.Network and stats.Network.ServerStatsItem and stats.Network.ServerStatsItem['Data Ping'] then
+library:SetWatermark(('Astolfo Ware | %s fps | %s ms | game: ' .. info.Name .. ''):format(math.floor(FPS), math.floor(stats.Network.ServerStatsItem['Data Ping']:GetValue())))
+else
+library:SetWatermark(('Astolfo Ware | %s fps | game: ' .. info.Name .. ''):format(math.floor(FPS)))
+end
+end)
+
+
+menu_group:AddButton('Unload', function()
+goto_closest = false
+auto_start = false
+auto_redo = false
+kill_aura = false
+inf_jump = false
+tp_walk = false
+if watermark_connection then watermark_connection:Disconnect() end
+if speed_connection then speed_connection:Disconnect() end
+library:Unload()
+end)
+
+
+menu_group:AddLabel('Menu bind'):AddKeyPicker('MenuKeybind', { Default = 'End', NoUI = true, Text = 'Menu keybind' })
+library.ToggleKeybind = Options and Options.MenuKeybind or 'End'
+
+
+theme_manager:SetLibrary(library)
+save_manager:SetLibrary(library)
+save_manager:IgnoreThemeSettings()
+save_manager:SetIgnoreIndexes({ 'MenuKeybind' })
+theme_manager:SetFolder('Astolfo Ware')
+save_manager:SetFolder('Astolfo Ware/Dungeon Heroes')
+save_manager:BuildConfigSection(tabs['ui settings'])
+theme_manager:ApplyToTab(tabs['ui settings'])
+save_manager:LoadAutoloadConfig()
+
+
+-- ===== Auto Execute After Teleport/Rejoin =====
+if queue_teleport then
+queue_teleport([[loadstring(game:HttpGet("https://your-repo-link/raw/main/MagnusHub_Merged.lua"))()]])
+end
