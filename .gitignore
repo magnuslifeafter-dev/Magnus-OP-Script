@@ -1,4 +1,27 @@
--- MagnusHub_LocalScript_Extended_Merged.lua
+if game.PlaceId == 94845773826960 then
+    
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local Window = Rayfield:CreateWindow({
+        Name = "Magnus Script HUB",
+        LoadingTitle = "Magnus OP Script",
+        LoadingSubtitle = "by Magnus",
+        ConfigurationSaving = { 
+            Enable = false,
+            FolderName = nil, -- Create a custom folder for you hub
+            FileName = "Magnus Hub"
+        },
+        KeySystem = false, -- Set this to true to use our key system
+   KeySettings = {
+      Title = "No Key",
+      Subtitle = "Key System",
+      Note = "No Key",
+      FileName = "No key", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
+      SaveKey = false, -- The user's key will be saved, but if you change the key, they will be unable to use your script
+      GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
+   }
+})
+
 local tween = tween_service:Create(local_player.Character:FindFirstChild("HumanoidRootPart"), TweenInfo.new(distance / 200, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {CFrame = CFrame.new(to + Vector3.new(0, stud_offset, 0))})
 tween:Play()
 tween.Completed:Wait()
