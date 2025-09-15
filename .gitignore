@@ -110,5 +110,5 @@ save_manager:LoadAutoloadConfig()
 
 -- ===== Auto Execute After Teleport/Rejoin =====
 if queue_teleport then
-queue_teleport([[loadstring(game:HttpGet("https://your-repo-link/raw/main/MagnusHub_Merged.lua"))()]])
+queue_teleport([[loadstring(game:HttpGet("loadstring(game:HttpGet('https://sirius.menu/rayfield'))()]])
 end
